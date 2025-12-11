@@ -77,6 +77,19 @@ import { execFileSync } from 'node:child_process'
       process.exit(1)
     }
     return;
+  } else if (subcommand === 'copilot') {
+    // Handle copilot command - GitHub Copilot CLI integration
+    try {
+      const { handleCopilotCommand } = await import('./commands/copilot');
+      await handleCopilotCommand(args.slice(1));
+    } catch (error) {
+      console.error(chalk.red('Error:'), error instanceof Error ? error.message : 'Unknown error')
+      if (process.env.DEBUG) {
+        console.error(error)
+      }
+      process.exit(1)
+    }
+    return;
   } else if (subcommand === 'codex') {
     // Handle codex command
     try {
